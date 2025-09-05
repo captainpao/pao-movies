@@ -1,93 +1,8 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 
 @customElement('search-bar')
 export class SearchBar extends LitElement {
-  static styles = css`
-    :host {
-      display: block;
-      margin-bottom: 2rem;
-    }
-
-    .search-container {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .search-form {
-      display: flex;
-      gap: 0.5rem;
-      align-items: stretch;
-    }
-
-    .search-input {
-      flex: 1;
-      padding: 0.75rem 1rem;
-      border: 2px solid #e5e7eb;
-      border-radius: 0.5rem;
-      font-size: 1rem;
-      transition: border-color 0.2s ease;
-    }
-
-    .search-input:focus {
-      outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    }
-
-    .search-button {
-      padding: 0.75rem 1.5rem;
-      background: #3b82f6;
-      color: white;
-      border: none;
-      border-radius: 0.5rem;
-      font-size: 1rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-
-    .search-button:hover {
-      background: #2563eb;
-    }
-
-    .search-button:disabled {
-      background: #9ca3af;
-      cursor: not-allowed;
-    }
-
-    .clear-button {
-      padding: 0.75rem 1rem;
-      background: #6b7280;
-      color: white;
-      border: none;
-      border-radius: 0.5rem;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-
-    .clear-button:hover {
-      background: #4b5563;
-    }
-
-    .search-header {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .search-title {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #1f2937;
-      margin-bottom: 0.5rem;
-    }
-
-    .search-subtitle {
-      color: #6b7280;
-      font-size: 1.125rem;
-    }
-  `;
 
   @state()
   private _searchQuery = '';
@@ -138,18 +53,18 @@ export class SearchBar extends LitElement {
 
   render() {
     return html`
-      <div class="search-container">
-        <div class="search-header">
-          <h1 class="search-title">Movie Explorer</h1>
-          <p class="search-subtitle">
+      <div class="max-w-xl mx-auto mb-8">
+        <div class="text-center mb-6">
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">Movie Explorer</h1>
+          <p class="text-gray-500 text-lg">
             Discover and search for your favorite movies
           </p>
         </div>
 
-        <form class="search-form" @submit=${this._handleSubmit}>
+        <form class="flex items-stretch gap-2" @submit=${this._handleSubmit}>
           <input
             type="text"
-            class="search-input"
+            class="flex-1 px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
             placeholder="Search for movies..."
             .value=${this._searchQuery}
             @input=${this._handleInput}
@@ -158,7 +73,7 @@ export class SearchBar extends LitElement {
 
           <button
             type="submit"
-            class="search-button"
+            class="px-6 py-3 bg-blue-500 text-white rounded-lg text-base font-medium hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
             ?disabled=${!this._searchQuery.trim() || this._isLoading}
           >
             ${this._isLoading ? 'Searching...' : 'Search'}
@@ -168,7 +83,7 @@ export class SearchBar extends LitElement {
             ? html`
                 <button
                   type="button"
-                  class="clear-button"
+                  class="px-4 py-3 bg-gray-600 text-white rounded-lg text-base hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
                   @click=${this._handleClear}
                   ?disabled=${this._isLoading}
                 >

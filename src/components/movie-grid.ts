@@ -1,84 +1,9 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { Movie } from '../types/movie';
 
 @customElement('movie-grid')
 export class MovieGrid extends LitElement {
-  static styles = css`
-    :host {
-      display: block;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-      padding: 1rem 0;
-    }
-
-    .loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 3rem;
-      color: #6b7280;
-      font-size: 1.125rem;
-    }
-
-    .error {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 3rem;
-      color: #ef4444;
-      font-size: 1.125rem;
-      text-align: center;
-    }
-
-    .empty {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 3rem;
-      color: #6b7280;
-      font-size: 1.125rem;
-      text-align: center;
-    }
-
-    .pagination {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 2rem;
-      padding: 1rem 0;
-    }
-
-    .pagination-button {
-      padding: 0.5rem 1rem;
-      border: 1px solid #d1d5db;
-      border-radius: 0.375rem;
-      background: white;
-      color: #374151;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .pagination-button:hover:not(:disabled) {
-      background: #f3f4f6;
-      border-color: #9ca3af;
-    }
-
-    .pagination-button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .page-info {
-      color: #6b7280;
-      font-size: 0.875rem;
-    }
-  `;
 
   @property({ type: Array })
   movies: Movie[] = [];
@@ -114,23 +39,23 @@ export class MovieGrid extends LitElement {
 
   render() {
     if (this.loading && this._isFirstRender) {
-      return html`<div class="loading">Loading movies...</div>`;
+      return html`<div class="flex justify-center items-center p-12 text-gray-500 text-lg">Loading movies...</div>`;
     }
 
     if (this.error) {
-      return html`<div class="error">
+      return html`<div class="flex justify-center items-center p-12 text-red-500 text-lg text-center">
         <p>Error: ${this.error}</p>
       </div>`;
     }
 
     if (!this.movies.length && !this.loading) {
-      return html`<div class="empty">
+      return html`<div class="flex justify-center items-center p-12 text-gray-500 text-lg text-center">
         <p>No movies found. Try a different search.</p>
       </div>`;
     }
 
     return html`
-      <div class="grid">
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6 py-4">
         ${this.movies.map(
           (movie) => html` <movie-card .movie=${movie}></movie-card> `
         )}
@@ -138,21 +63,21 @@ export class MovieGrid extends LitElement {
 
       ${this.totalPages > 1
         ? html`
-            <div class="pagination">
+            <div class="flex justify-center items-center gap-4 mt-8 py-4">
               <button
-                class="pagination-button"
+                class="px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 transition disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 hover:border-gray-400"
                 ?disabled=${this.currentPage === 1 || this.loading}
                 @click=${() => this._handlePageChange(this.currentPage - 1)}
               >
                 Previous
               </button>
 
-              <span class="page-info">
+              <span class="text-gray-500 text-sm">
                 Page ${this.currentPage} of ${this.totalPages}
               </span>
 
               <button
-                class="pagination-button"
+                class="px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 transition disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 hover:border-gray-400"
                 ?disabled=${this.currentPage === this.totalPages ||
                 this.loading}
                 @click=${() => this._handlePageChange(this.currentPage + 1)}
@@ -163,7 +88,7 @@ export class MovieGrid extends LitElement {
           `
         : ''}
       ${this.loading
-        ? html`<div class="loading">Loading more movies...</div>`
+        ? html`<div class="flex justify-center items-center p-12 text-gray-500 text-lg">Loading more movies...</div>`
         : ''}
     `;
   }

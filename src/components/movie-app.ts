@@ -1,57 +1,10 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { Movie, MoviesResponse } from '../types/movie';
 import { tmdbService } from '../services/tmdb-api';
 
 @customElement('movie-app')
 export class MovieApp extends LitElement {
-  static styles = css`
-    :host {
-      display: block;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .app-container {
-      min-height: 100vh;
-      padding: 2rem 1rem;
-    }
-
-    .content {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .error-toast {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      background: #ef4444;
-      color: white;
-      padding: 1rem 1.5rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-      animation: slideIn 0.3s ease;
-    }
-
-    @keyframes slideIn {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .app-container {
-        padding: 1rem 0.5rem;
-      }
-    }
-  `;
 
   private _movies: Movie[] = [];
   private _loading = false;
@@ -187,8 +140,8 @@ export class MovieApp extends LitElement {
 
   render() {
     return html`
-      <div class="app-container">
-        <div class="content">
+      <div class="min-h-screen bg-gradient-to-br from-indigo-500 to-purple-600 px-4 py-8">
+        <div class="max-w-6xl mx-auto">
           <search-bar
             .loading=${this._loading}
             @search-submit=${this._handleSearchSubmit}
@@ -206,7 +159,7 @@ export class MovieApp extends LitElement {
         </div>
 
         ${this._showError
-          ? html` <div class="error-toast">${this._error}</div> `
+          ? html` <div class="fixed top-4 right-4 bg-red-500 text-white px-4 py-3 rounded-lg shadow z-50">${this._error}</div> `
           : ''}
       </div>
     `;
