@@ -20,23 +20,23 @@
 - Example component structure:
 
 ```typescript
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 @customElement('my-component')
 export class MyComponent extends LitElement {
-  static styles = css`
-    :host {
-      display: block;
-    }
-  `;
+  // Use Light DOM for TailwindCSS compatibility
+  createRenderRoot() {
+    return this;
+  }
 
   @property({ type: String }) name = 'World';
 
   render() {
     return html`
-      <div class="p-4 bg-white rounded-lg shadow">
-        <h2 class="text-xl font-semibold">Hello, ${this.name}!</h2>
+      <div class="bg-gradient-to-br from-indigo-500 to-purple-600 p-6 rounded-2xl shadow-xl">
+        <h2 class="text-2xl font-bold text-white mb-2">Hello, ${this.name}!</h2>
+        <p class="text-indigo-100">Welcome to the app</p>
       </div>
     `;
   }
@@ -45,16 +45,29 @@ export class MyComponent extends LitElement {
 
 #### TailwindCSS Usage
 
+- **Always use Light DOM rendering** for TailwindCSS compatibility:
+  ```typescript
+  createRenderRoot() {
+    return this; // Use Light DOM for TailwindCSS styles
+  }
+  ```
 - Use utility classes directly in templates
-- Follow Tailwind's responsive design patterns
-- Use semantic color classes (e.g., `text-slate-600`, `bg-indigo-500`)
+- Follow Tailwind's responsive design patterns with `sm:`, `md:`, `lg:` prefixes
+- Use consistent color palette: purple/indigo gradients, white containers
 - Leverage spacing scale (`p-4`, `m-2`, `space-x-4`)
-- Example Tailwind usage:
+- Apply hover effects and transitions for interactive elements
+- Example Tailwind usage with Light DOM:
 
 ```html
-<div class="max-w-md mx-auto bg-white rounded-xl shadow-md p-8">
-  <h2 class="text-2xl font-bold text-gray-800 mb-4">Title</h2>
-  <p class="text-gray-600">Content here</p>
+<div class="bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-800 p-5">
+  <div class="bg-white p-8 rounded-2xl shadow-2xl">
+    <h2 class="text-2xl sm:text-3xl font-bold text-purple-600 mb-4">Title</h2>
+    <p class="text-gray-600">Content here</p>
+    <button class="bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold 
+                   rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all duration-200">
+      Click me
+    </button>
+  </div>
 </div>
 ```
 
@@ -80,6 +93,13 @@ export class MyComponent extends LitElement {
 - Use component-scoped styles with Lit's `static styles`
 - Follow Tailwind's design system conventions
 - Use semantic color palette consistently
+
+#### DOM Rendering Strategy
+
+- **Always use Light DOM** (`createRenderRoot() { return this; }`) for TailwindCSS projects
+- Light DOM allows global CSS (Tailwind) to apply to components
+- Shadow DOM isolates styles and requires CSS imports per component
+- For TailwindCSS compatibility, Light DOM is required
 
 #### Performance
 
