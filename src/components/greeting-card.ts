@@ -44,10 +44,14 @@ export class GreetingCard extends LitElement {
 
   render() {
     return html`
-      <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl m-4">
+      <div
+        class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl m-4"
+      >
         <div class="md:flex">
           <div class="p-8">
-            <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
+            <div
+              class="uppercase tracking-wide text-sm text-indigo-500 font-semibold"
+            >
               Welcome
             </div>
             <h2 class="block mt-1 text-lg leading-tight font-medium text-black">
@@ -56,14 +60,18 @@ export class GreetingCard extends LitElement {
             <p class="mt-2 text-slate-500">
               This is a sample Lit component styled with Tailwind CSS.
             </p>
-            
+
             ${this.showIcon
               ? html`
                   <div class="mt-4 flex items-center">
-                    <span class="inline-flex items-center justify-center p-2 bg-indigo-100 rounded-full">
+                    <span
+                      class="inline-flex items-center justify-center p-2 bg-indigo-100 rounded-full"
+                    >
                       ${unsafeHTML(heroIcons.bolt)}
                     </span>
-                    <span class="ml-3 text-sm text-slate-600">With Heroicon integration</span>
+                    <span class="ml-3 text-sm text-slate-600"
+                      >With Heroicon integration</span
+                    >
                   </div>
                 `
               : ''}

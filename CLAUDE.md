@@ -3,6 +3,7 @@
 ## Tech Stack Requirements
 
 ### Core Technologies
+
 - **LitElement 3.x** - Primary component framework
 - **TailwindCSS 3.x** - Utility-first CSS framework
 - **TypeScript** - Type safety and development experience
@@ -11,6 +12,7 @@
 ### Component Development
 
 #### LitElement Components
+
 - Use `@customElement` decorator for component registration
 - Implement `static styles` with Lit's `css` tagged template
 - Use `@property` decorators for reactive properties
@@ -24,7 +26,9 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('my-component')
 export class MyComponent extends LitElement {
   static styles = css`
-    :host { display: block; }
+    :host {
+      display: block;
+    }
   `;
 
   @property({ type: String }) name = 'World';
@@ -40,6 +44,7 @@ export class MyComponent extends LitElement {
 ```
 
 #### TailwindCSS Usage
+
 - Use utility classes directly in templates
 - Follow Tailwind's responsive design patterns
 - Use semantic color classes (e.g., `text-slate-600`, `bg-indigo-500`)
@@ -54,37 +59,43 @@ export class MyComponent extends LitElement {
 ```
 
 ### File Structure Conventions
+
 - Components: `src/components/` directory
-- Utilities: `src/utils/` directory  
+- Utilities: `src/utils/` directory
 - Styles: `src/styles/` directory
 - Types: `src/types/` directory (if needed)
 
 ### Best Practices
 
 #### Component Design
+
 - Keep components focused and single-responsibility
 - Use composition over inheritance
 - Implement proper TypeScript types for properties
 - Use Lit's built-in reactivity system
 
 #### Styling
+
 - Prefer Tailwind utility classes over custom CSS
 - Use component-scoped styles with Lit's `static styles`
 - Follow Tailwind's design system conventions
 - Use semantic color palette consistently
 
 #### Performance
+
 - Use Lit's efficient rendering and update system
 - Implement proper event handling with `@eventOptions`
 - Avoid unnecessary re-renders with property optimization
 
 #### Accessibility
+
 - Use semantic HTML elements
 - Implement proper ARIA attributes when needed
 - Ensure keyboard navigation support
 - Follow WCAG guidelines
 
 ### Development Workflow
+
 1. Create component in `src/components/`
 2. Import and use in `src/main.ts` if needed
 3. Use Tailwind classes for styling
@@ -92,6 +103,7 @@ export class MyComponent extends LitElement {
 5. Run `npm run lint` and `npm run format` before committing
 
 ### Build Commands
+
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run lint` - Run ESLint
@@ -100,6 +112,7 @@ export class MyComponent extends LitElement {
 ### Example Patterns
 
 #### Reactive Properties
+
 ```typescript
 @property({ type: String }) title = '';
 @property({ type: Boolean, reflect: true }) active = false;
@@ -107,6 +120,7 @@ export class MyComponent extends LitElement {
 ```
 
 #### Event Handling
+
 ```typescript
 private _handleClick() {
   this.dispatchEvent(new CustomEvent('clicked', {
@@ -117,10 +131,11 @@ private _handleClick() {
 ```
 
 #### Conditional Rendering
+
 ```typescript
 render() {
   return html`
-    ${this.isLoading 
+    ${this.isLoading
       ? html`<div class="loading">Loading...</div>`
       : html`<div class="content">${this.content}</div>`
     }

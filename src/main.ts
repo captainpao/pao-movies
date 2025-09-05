@@ -1,2 +1,2 @@
 import './styles/index.css';
-import './components/greeting-card';
+import './components/movie-app';
