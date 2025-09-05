@@ -89,10 +89,17 @@ export class MyComponent extends LitElement {
 
 #### Styling
 
-- Prefer Tailwind utility classes over custom CSS
-- Use component-scoped styles with Lit's `static styles`
-- Follow Tailwind's design system conventions
-- Use semantic color palette consistently
+- **Always use TailwindCSS utility classes** - never create new CSS classes for styling
+- Avoid using Lit's `static styles` for component styling - use Tailwind classes directly in templates
+- Follow Tailwind's design system conventions and use the provided utility classes
+- Use semantic color palette consistently from Tailwind's color system
+- Leverage Tailwind's responsive prefixes (`sm:`, `md:`, `lg:`, `xl:`) for responsive design
+- Use Tailwind's spacing scale (`p-4`, `m-2`, `space-x-4`) instead of custom values
+- **Only use custom CSS for**:
+  - Complex animations not covered by Tailwind
+  - Third-party library overrides when necessary
+  - Very specific layout requirements that can't be achieved with utility classes
+  - Custom font faces or icon implementations
 
 #### DOM Rendering Strategy
 
@@ -116,11 +123,12 @@ export class MyComponent extends LitElement {
 
 ### Development Workflow
 
-1. Create component in `src/components/`
+1. Create component in `src/components/` with Light DOM rendering
 2. Import and use in `src/main.ts` if needed
-3. Use Tailwind classes for styling
+3. **Use Tailwind utility classes exclusively** for all styling
 4. Test component functionality
 5. Run `npm run lint` and `npm run format` before committing
+6. Verify Tailwind classes are working in browser dev tools
 
 ### Build Commands
 
