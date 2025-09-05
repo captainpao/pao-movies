@@ -5,6 +5,9 @@ import { tmdbService } from '../services/tmdb-api';
 
 @customElement('movie-app')
 export class MovieApp extends LitElement {
+  createRenderRoot() {
+    return this;
+  }
 
   private _movies: Movie[] = [];
   private _loading = false;
@@ -140,26 +143,30 @@ export class MovieApp extends LitElement {
 
   render() {
     return html`
-      <div class="min-h-screen bg-gradient-to-br from-indigo-500 to-purple-600 px-4 py-8">
-        <div class="max-w-6xl mx-auto">
-          <search-bar
-            .loading=${this._loading}
-            @search-submit=${this._handleSearchSubmit}
-            @search-clear=${this._handleSearchClear}
-          ></search-bar>
+      <div class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-800 p-5">
+        <div class="max-w-7xl mx-auto">
+          <div class="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl mb-8">
+            <search-bar
+              .loading=${this._loading}
+              @search-submit=${this._handleSearchSubmit}
+              @search-clear=${this._handleSearchClear}
+            ></search-bar>
+          </div>
 
-          <movie-grid
-            .movies=${this._movies}
-            .loading=${this._loading}
-            .error=${this._error}
-            .currentPage=${this._currentPage}
-            .totalPages=${this._totalPages}
-            @page-change=${this._handlePageChange}
-          ></movie-grid>
+          <div class="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl">
+            <movie-grid
+              .movies=${this._movies}
+              .loading=${this._loading}
+              .error=${this._error}
+              .currentPage=${this._currentPage}
+              .totalPages=${this._totalPages}
+              @page-change=${this._handlePageChange}
+            ></movie-grid>
+          </div>
         </div>
 
         ${this._showError
-          ? html` <div class="fixed top-4 right-4 bg-red-500 text-white px-4 py-3 rounded-lg shadow z-50">${this._error}</div> `
+          ? html` <div class="fixed top-4 right-4 bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg z-50">${this._error}</div> `
           : ''}
       </div>
     `;

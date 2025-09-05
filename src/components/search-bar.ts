@@ -3,6 +3,9 @@ import { customElement, state } from 'lit/decorators.js';
 
 @customElement('search-bar')
 export class SearchBar extends LitElement {
+  createRenderRoot() {
+    return this;
+  }
 
   @state()
   private _searchQuery = '';
@@ -53,9 +56,9 @@ export class SearchBar extends LitElement {
 
   render() {
     return html`
-      <div class="max-w-xl mx-auto mb-8">
+      <div class="max-w-2xl mx-auto">
         <div class="text-center mb-6">
-          <h1 class="text-3xl font-bold text-gray-900 mb-2">Movie Explorer</h1>
+          <h1 class="text-2xl sm:text-3xl font-bold text-purple-600 mb-2">Movie Explorer</h1>
           <p class="text-gray-500 text-lg">
             Discover and search for your favorite movies
           </p>
@@ -64,7 +67,7 @@ export class SearchBar extends LitElement {
         <form class="flex items-stretch gap-2" @submit=${this._handleSubmit}>
           <input
             type="text"
-            class="flex-1 px-4 py-3 border-2 border-gray-200 rounded-lg text-base focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+            class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg text-base focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-colors duration-200"
             placeholder="Search for movies..."
             .value=${this._searchQuery}
             @input=${this._handleInput}
@@ -73,7 +76,7 @@ export class SearchBar extends LitElement {
 
           <button
             type="submit"
-            class="px-6 py-3 bg-blue-500 text-white rounded-lg text-base font-medium hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            class="px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02]"
             ?disabled=${!this._searchQuery.trim() || this._isLoading}
           >
             ${this._isLoading ? 'Searching...' : 'Search'}
@@ -83,7 +86,7 @@ export class SearchBar extends LitElement {
             ? html`
                 <button
                   type="button"
-                  class="px-4 py-3 bg-gray-600 text-white rounded-lg text-base hover:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  class="px-4 py-3 bg-gradient-to-r from-gray-600 to-gray-700 text-white font-semibold rounded-lg hover:from-gray-700 hover:to-gray-800 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02]"
                   @click=${this._handleClear}
                   ?disabled=${this._isLoading}
                 >
