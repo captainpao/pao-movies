@@ -1,4 +1,4 @@
-import { MoviesResponse, SearchParams } from '../types/movie';
+import { MoviesResponse, SearchParams, MovieDetail } from '../types/movie';
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
@@ -37,6 +37,11 @@ class TMDBService {
   async getPopularMovies(page: number = 1): Promise<MoviesResponse> {
     const url = `${BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}&language=en-US`;
     return this.fetchWithErrorHandling<MoviesResponse>(url);
+  }
+
+  async getMovieById(id: number): Promise<MovieDetail> {
+    const url = `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=en-US&append_to_response=credits`;
+    return this.fetchWithErrorHandling<MovieDetail>(url);
   }
 
   async searchMovies({

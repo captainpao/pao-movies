@@ -1,7 +1,8 @@
 import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { Movie, MoviesResponse } from '../types/movie';
+import { Movie, MoviesResponse, MovieDetail } from '../types/movie';
 import { tmdbService } from '../services/tmdb-api';
+import './movie-detail';
 
 @customElement('movie-app')
 export class MovieApp extends LitElement {
@@ -17,6 +18,9 @@ export class MovieApp extends LitElement {
   private _searchMode = false;
   private _currentQuery = '';
   private _showError = false;
+  private _selectedMovie: MovieDetail | null = null;
+  private _detailLoading = false;
+  private _detailError = '';
 
   get movies() {
     return this._movies;
@@ -141,33 +145,70 @@ export class MovieApp extends LitElement {
     }, 5000);
   }
 
+  private async _handleMovieClick(event: CustomEvent) {
+    const movie = event.detail.movie;
+    this._selectedMovie = null;
+    this._detailLoading = true;
+    this._detailError = '';
+    this.requestUpdate();
+
+    try {
+      const detail = await tmdbService.getMovieById(movie.id);
+      this._selectedMovie = detail;
+    } catch (error) {
+      this._detailError =
+        error instanceof Error ? error.message : 'Failed to load movie details';
+    } finally {
+      this._detailLoading = false;
+      this.requestUpdate();
+    }
+  }
+
+  private _handleBackClick() {
+    this._selectedMovie = null;
+    this._detailError = '';
+    this.requestUpdate();
+  }
+
   render() {
     return html`
       <div class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-800 p-5">
         <div class="max-w-7xl mx-auto">
           <div class="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl mb-8">
-            <search-bar
-              .loading=${this._loading}
-              @search-submit=${this._handleSearchSubmit}
-              @search-clear=${this._handleSearchClear}
-            ></search-bar>
-          </div>
+            ${this._selectedMovie || this._detailLoading || this._detailError
+        ? html`
+                  <movie-detail
+                    .movie=${this._selectedMovie}
+                    .loading=${this._detailLoading}
+                    .error=${this._detailError}
+                    @back-click=${this._handleBackClick}
+                  ></movie-detail>
+                `
+        : html`
+                  <search-bar
+                    .loading=${this._loading}
+                    @search-submit=${this._handleSearchSubmit}
+                    @search-clear=${this._handleSearchClear}
+                  ></search-bar>
+                </div>
 
-          <div class="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl">
-            <movie-grid
-              .movies=${this._movies}
-              .loading=${this._loading}
-              .error=${this._error}
-              .currentPage=${this._currentPage}
-              .totalPages=${this._totalPages}
-              @page-change=${this._handlePageChange}
-            ></movie-grid>
+                <div class="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl">
+                  <movie-grid
+                    .movies=${this._movies}
+                    .loading=${this._loading}
+                    .error=${this._error}
+                    .currentPage=${this._currentPage}
+                    .totalPages=${this._totalPages}
+                    @page-change=${this._handlePageChange}
+                    @movie-click=${this._handleMovieClick}
+                  ></movie-grid>
+                `}
           </div>
         </div>
 
         ${this._showError
-          ? html` <div class="fixed top-4 right-4 bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg z-50">${this._error}</div> `
-          : ''}
+        ? html` <div class="fixed top-4 right-4 bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg z-50">${this._error}</div> `
+        : ''}
       </div>
     `;
   }
