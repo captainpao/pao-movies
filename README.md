@@ -1,4 +1,4 @@
-# TMDB Movie Explorer
+# Pao Fiction
 
 A modern, responsive movie exploration dashboard built with LitElement, TypeScript, and TailwindCSS. Discover popular movies and search through the extensive TMDB database.
 

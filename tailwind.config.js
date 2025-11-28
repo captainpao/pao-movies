@@ -4,6 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        bungee: ['"Bungee"', 'cursive'],
         sans: [
           'Roboto',
           'system-ui',

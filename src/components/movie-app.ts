@@ -1,7 +1,8 @@
 import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { Movie, MoviesResponse, MovieDetail } from '../types/movie';
+import { Movie, MovieDetail } from '../types/movie';
 import { tmdbService } from '../services/tmdb-api';
+import { captainPaoFavoriteMovies } from '../data/captainpao-movies';
 import './movie-detail';
 
 @customElement('movie-app')
@@ -69,23 +70,50 @@ export class MovieApp extends LitElement {
 
   connectedCallback(): void {
     super.connectedCallback();
-    this._loadPopularMovies();
+    this._loadCaptainPaoMovies();
   }
 
-  private async _loadPopularMovies(page: number = 1) {
+  private async _loadCaptainPaoMovies(page: number = 1) {
     this.loading = true;
     this.error = '';
     this._searchMode = false;
     this._currentQuery = '';
 
     try {
-      const response: MoviesResponse = await tmdbService.getPopularMovies(page);
-      this.movies = response.results;
-      this.currentPage = response.page;
-      this.totalPages = Math.min(response.total_pages, 500); // TMDB limits to 500 pages
+      const itemsPerPage = 20;
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const paginatedMovies = captainPaoFavoriteMovies.slice(start, end);
+
+      const moviePromises = paginatedMovies.map(async (m) => {
+        const id = (m as any).id;
+        if (id) {
+          try {
+            return await tmdbService.getMovieById(id);
+          } catch (e) {
+            console.warn(`Failed to fetch details for ${m.title}`, e);
+          }
+        }
+
+        // Fallback if ID missing or fetch fails
+        return {
+          id: m.rank,
+          title: m.title,
+          overview: `Directed by ${m.director}. Rank: ${m.rank}`,
+          poster_path: null,
+          backdrop_path: null,
+          release_date: `${m.year}-01-01`,
+          vote_average: 0,
+          vote_count: 0,
+          popularity: 0,
+        };
+      });
+
+      this.movies = await Promise.all(moviePromises);
+      this.currentPage = page;
+      this.totalPages = Math.ceil(captainPaoFavoriteMovies.length / itemsPerPage);
     } catch (error) {
-      this.error =
-        error instanceof Error ? error.message : 'Failed to load movies';
+      this.error = 'Failed to load movies';
       this._showErrorToast(this.error);
     } finally {
       this.loading = false;
@@ -99,13 +127,45 @@ export class MovieApp extends LitElement {
     this._currentQuery = query;
 
     try {
-      const response: MoviesResponse = await tmdbService.searchMovies({
-        query,
-        page,
+      const lowerQuery = query.toLowerCase();
+      const filteredMovies = captainPaoFavoriteMovies.filter(
+        (movie) =>
+          movie.title.toLowerCase().includes(lowerQuery) ||
+          movie.director.toLowerCase().includes(lowerQuery)
+      );
+
+      const itemsPerPage = 20;
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const paginatedMovies = filteredMovies.slice(start, end);
+
+      const moviePromises = paginatedMovies.map(async (m) => {
+        const id = (m as any).id;
+        if (id) {
+          try {
+            return await tmdbService.getMovieById(id);
+          } catch (e) {
+            console.warn(`Failed to fetch details for ${m.title}`, e);
+          }
+        }
+
+        // Fallback if ID missing or fetch fails
+        return {
+          id: m.rank,
+          title: m.title,
+          overview: `Directed by ${m.director}. Rank: ${m.rank}`,
+          poster_path: null,
+          backdrop_path: null,
+          release_date: `${m.year}-01-01`,
+          vote_average: 0,
+          vote_count: 0,
+          popularity: 0,
+        };
       });
-      this.movies = response.results;
-      this.currentPage = response.page;
-      this.totalPages = Math.min(response.total_pages, 500);
+
+      this.movies = await Promise.all(moviePromises);
+      this.currentPage = page;
+      this.totalPages = Math.ceil(filteredMovies.length / itemsPerPage);
     } catch (error) {
       this.error =
         error instanceof Error ? error.message : 'Failed to search movies';
@@ -123,7 +183,7 @@ export class MovieApp extends LitElement {
   }
 
   private _handleSearchClear() {
-    this._loadPopularMovies();
+    this._loadCaptainPaoMovies();
   }
 
   private _handlePageChange(event: CustomEvent) {
@@ -131,7 +191,7 @@ export class MovieApp extends LitElement {
     if (this._searchMode) {
       this._searchMovies(this._currentQuery, page);
     } else {
-      this._loadPopularMovies(page);
+      this._loadCaptainPaoMovies(page);
     }
   }
 
@@ -172,9 +232,9 @@ export class MovieApp extends LitElement {
 
   render() {
     return html`
-      <div class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-800 p-5">
-        <div class="max-w-7xl mx-auto">
-          <div class="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl mb-8">
+      <div class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-800">
+        <div class="max-w-[1600px] mx-auto relative">
+          <div class="p-4">
             ${this._selectedMovie || this._detailLoading || this._detailError
         ? html`
                   <movie-detail
