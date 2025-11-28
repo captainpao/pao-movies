@@ -4,6 +4,7 @@ import { Movie, MovieDetail } from '../types/movie';
 import { tmdbService } from '../services/tmdb-api';
 import { captainPaoFavoriteMovies } from '../data/captainpao-movies';
 import './movie-detail';
+import paoVideoClerkBg from '../assets/images/pao-video-clerk.png';
 
 @customElement('movie-app')
 export class MovieApp extends LitElement {
@@ -233,7 +234,7 @@ export class MovieApp extends LitElement {
   render() {
     return html`
       <div class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-800">
-        <div class="max-w-[1600px] mx-auto relative" style="background-image: url('src/assets/images/pao-video-clerk.png'); background-repeat: no-repeat; background-size: 300px; background-position: top right;">
+        <div class="max-w-[1600px] mx-auto relative" style="background-image: url('${paoVideoClerkBg}'); background-repeat: no-repeat; background-size: 300px; background-position: top right;">
           <div class="p-4">
             ${this._selectedMovie || this._detailLoading || this._detailError
         ? html`

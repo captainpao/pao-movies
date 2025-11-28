@@ -6,12 +6,15 @@ export default defineConfig({
       '@': '/src'
     }
   },
+  assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg', '**/*.webp'],
   build: {
     rollupOptions: {
       input: {
         main: '/index.html'
       }
-    }
+    },
+    assetsDir: 'assets',
+    copyPublicDir: true
   },
   base: '/'
 })
