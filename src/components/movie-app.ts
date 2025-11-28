@@ -233,7 +233,7 @@ export class MovieApp extends LitElement {
   render() {
     return html`
       <div class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-800">
-        <div class="max-w-[1600px] mx-auto relative">
+        <div class="max-w-[1600px] mx-auto relative" style="background-image: url('src/assets/images/pao-video-clerk.png'); background-repeat: no-repeat; background-size: 300px; background-position: top right;">
           <div class="p-4">
             ${this._selectedMovie || this._detailLoading || this._detailError
         ? html`
