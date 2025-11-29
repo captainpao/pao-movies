@@ -2,6 +2,7 @@ import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { Movie, MovieDetail } from '../types/movie';
 import { tmdbService } from '../services/tmdb-api';
+import { deepseekService } from '../services/deepseek-service';
 import { captainPaoFavoriteMovies } from '../data/captainpao-movies';
 import './movie-detail';
 import paoVideoClerkBg from '../assets/images/pao-video-clerk.png';
@@ -121,24 +122,26 @@ export class MovieApp extends LitElement {
     }
   }
 
+  private _rationale = '';
+
   private async _searchMovies(query: string, page: number = 1) {
     this.loading = true;
     this.error = '';
     this._searchMode = true;
     this._currentQuery = query;
+    this._rationale = ''; // Reset rationale
 
     try {
-      const lowerQuery = query.toLowerCase();
-      const filteredMovies = captainPaoFavoriteMovies.filter(
-        (movie) =>
-          movie.title.toLowerCase().includes(lowerQuery) ||
-          movie.director.toLowerCase().includes(lowerQuery)
-      );
+      // Use DeepSeek to get recommendations based on the prompt
+      // We pass the full list of movies to the service so Paolo can choose from them
+      const { recommendations, rationale } = await deepseekService.getRecommendations(query, captainPaoFavoriteMovies);
+
+      this._rationale = rationale;
 
       const itemsPerPage = 20;
       const start = (page - 1) * itemsPerPage;
       const end = start + itemsPerPage;
-      const paginatedMovies = filteredMovies.slice(start, end);
+      const paginatedMovies = recommendations.slice(start, end);
 
       const moviePromises = paginatedMovies.map(async (m) => {
         const id = (m as any).id;
@@ -166,10 +169,10 @@ export class MovieApp extends LitElement {
 
       this.movies = await Promise.all(moviePromises);
       this.currentPage = page;
-      this.totalPages = Math.ceil(filteredMovies.length / itemsPerPage);
+      this.totalPages = Math.ceil(recommendations.length / itemsPerPage);
     } catch (error) {
       this.error =
-        error instanceof Error ? error.message : 'Failed to search movies';
+        error instanceof Error ? error.message : 'Failed to get recommendations';
       this._showErrorToast(this.error);
     } finally {
       this.loading = false;
@@ -184,6 +187,7 @@ export class MovieApp extends LitElement {
   }
 
   private _handleSearchClear() {
+    this._rationale = '';
     this._loadCaptainPaoMovies();
   }
 
@@ -233,8 +237,8 @@ export class MovieApp extends LitElement {
 
   render() {
     return html`
-      <div class="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-600 to-purple-800">
-        <div class="max-w-[1600px] mx-auto relative" style="background-image: url('${paoVideoClerkBg}'); background-repeat: no-repeat; background-size: 300px; background-position: top right;">
+      <div class="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900">
+        <div class="max-w-[1600px] mx-auto relative" style="background-image: url('${paoVideoClerkBg}'); background-repeat: no-repeat; background-size: 300px; background-position: top right 50px;">
           <div class="p-4">
             ${this._selectedMovie || this._detailLoading || this._detailError
         ? html`
@@ -254,6 +258,15 @@ export class MovieApp extends LitElement {
                 </div>
 
                 <div class="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl">
+                  ${this._rationale
+            ? html`
+                <blockquote class="relative p-6 text-xl border-l-4 bg-neutral-50 text-neutral-600 border-neutral-500 quote">
+                  <div class="stylistic-quote-mark" aria-hidden="true"></div>
+                  <p class="text-gray-800">${this._rationale}</p>
+                  <cite class="block text-right text-sm italic mt-2">Paolo, Video Clerk</cite>
+                </blockquote>
+                `
+            : ''}
                   <movie-grid
                     .movies=${this._movies}
                     .loading=${this._loading}

@@ -80,7 +80,7 @@ export class MovieDetailComponent extends LitElement {
                 d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
               />
             </svg>
-            Back to Results
+            Back
           </button>
         </div>
 
@@ -204,35 +204,6 @@ export class MovieDetailComponent extends LitElement {
                   </p>
                 </div>
               </div>
-
-              ${this.movie.homepage
-        ? html`
-                    <div class="mt-8">
-                      <a
-                        href="${this.movie.homepage}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-                      >
-                        Visit Homepage
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          class="w-4 h-4"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-                          />
-                        </svg>
-                      </a>
-                    </div>
-                  `
-        : ''}
             </div>
           </div>
         </div>

@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+blockquote {
+  border-left: none;
+  border-radius: 1rem;
+  margin-bottom: 1.6rem;
+}
