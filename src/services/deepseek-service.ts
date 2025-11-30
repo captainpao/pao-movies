@@ -1,14 +1,10 @@
 
-const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
+const envBackendUrl = import.meta.env.VITE_BACKEND_URL;
+const BACKEND_URL = envBackendUrl === 'http://localhost:3001' ? '' : (envBackendUrl || '');
+const DEEPSEEK_API_URL = `${BACKEND_URL}/api/deepseek/chat`;
 
 export const deepseekService = {
   async getRecommendations(prompt: string, availableMovies: any[]): Promise<{ recommendations: any[], rationale: string }> {
-    const apiKey = import.meta.env.VITE_DEEPSEEK_API_KEY;
-
-    if (!apiKey) {
-      throw new Error('DeepSeek API key is missing');
-    }
-
     const movieList = availableMovies.map(m => `- ${m.title} (ID: ${m.id})`).join('\n');
 
     const systemPrompt = `
@@ -36,8 +32,7 @@ When the user asks for a recommendation, you must:
       const response = await fetch(DEEPSEEK_API_URL, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           model: 'deepseek-chat',

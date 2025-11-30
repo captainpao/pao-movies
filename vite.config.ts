@@ -16,5 +16,14 @@ export default defineConfig({
     assetsDir: 'assets',
     copyPublicDir: true
   },
-  base: '/'
+  base: '/',
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
+  }
 })

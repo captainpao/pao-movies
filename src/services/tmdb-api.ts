@@ -1,25 +1,23 @@
 import { MoviesResponse, SearchParams, MovieDetail } from '../types/movie';
 
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL;
-const IMAGE_BASE_URL = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
-
-if (!API_KEY || API_KEY === 'your_tmdb_api_key_here') {
-  throw new Error(
-    'TMDB API key is not configured. Please set VITE_TMDB_API_KEY in your .env file'
-  );
-}
+const envBackendUrl = import.meta.env.VITE_BACKEND_URL;
+const BACKEND_URL = envBackendUrl === 'http://localhost:3001' ? '' : (envBackendUrl || '');
+const BASE_URL = `${BACKEND_URL}/api/tmdb`;
+const IMAGE_BASE_URL = import.meta.env.VITE_TMDB_IMAGE_BASE_URL || 'https://image.tmdb.org/t/p';
 
 class TMDBService {
   private async fetchWithErrorHandling<T>(url: string): Promise<T> {
     try {
+      console.log(`Fetching URL: ${url}`);
       const response = await fetch(url);
+      console.log(`Response status: ${response.status}`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log('Fetched data:', data);
 
       if (data.errors) {
         throw new Error(data.errors.join(', '));
@@ -35,12 +33,12 @@ class TMDBService {
   }
 
   async getPopularMovies(page: number = 1): Promise<MoviesResponse> {
-    const url = `${BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}&language=en-US`;
+    const url = `${BASE_URL}/movie/popular?page=${page}&language=en-US`;
     return this.fetchWithErrorHandling<MoviesResponse>(url);
   }
 
   async getMovieById(id: number): Promise<MovieDetail> {
-    const url = `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=en-US&append_to_response=credits`;
+    const url = `${BASE_URL}/movie/${id}?language=en-US&append_to_response=credits`;
     return this.fetchWithErrorHandling<MovieDetail>(url);
   }
 
@@ -49,7 +47,7 @@ class TMDBService {
     page = 1,
   }: SearchParams): Promise<MoviesResponse> {
     const encodedQuery = encodeURIComponent(query);
-    const url = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodedQuery}&page=${page}&language=en-US&include_adult=false`;
+    const url = `${BASE_URL}/search/movie?query=${encodedQuery}&page=${page}&language=en-US&include_adult=false`;
     return this.fetchWithErrorHandling<MoviesResponse>(url);
   }
 
