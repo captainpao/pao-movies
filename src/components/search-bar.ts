@@ -61,7 +61,7 @@ export class SearchBar extends LitElement {
           </p>
         </div>
 
-        <form class="flex items-stretch gap-2 mb-8" @submit=${this._handleSubmit}>
+        <form class="flex items-stretch gap-2" @submit=${this._handleSubmit}>
           <textarea
             class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg text-base focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 transition-colors duration-200 resize-none h-24"
             placeholder="Tell Paolo what you're craving — like, “Action vibes today. Hand me a tape.”"

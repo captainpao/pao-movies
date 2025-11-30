@@ -244,7 +244,7 @@ export class MovieApp extends LitElement {
   render() {
     return html`
       <div class="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900">
-        <div class="max-w-[1600px] mx-auto relative" style="background-image: url('${paoVideoClerkBg}'); background-repeat: no-repeat; background-size: 300px; background-position: top right 50px;">
+        <div class="max-w-[1600px] mx-auto relative">
           <div class="p-4">
             ${this._selectedMovie || this._detailLoading || this._detailError
         ? html`
@@ -256,32 +256,34 @@ export class MovieApp extends LitElement {
                   ></movie-detail>
                 `
         : html`
-                  <search-bar
-                    .loading=${this._loading}
-                    @search-submit=${this._handleSearchSubmit}
-                    @search-clear=${this._handleSearchClear}
-                  ></search-bar>
-                </div>
+                  <div style="background-image: url('${paoVideoClerkBg}'); background-repeat: no-repeat; background-size: 300px; background-position: top right 50px; padding-bottom: 16px;">
+                    <search-bar
+                      .loading=${this._loading}
+                      @search-submit=${this._handleSearchSubmit}
+                      @search-clear=${this._handleSearchClear}
+                    ></search-bar>
+                  </div>
 
-                <div class="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl">
-                  ${this._rationale
-            ? html`
-                <blockquote class="relative p-6 text-xl border-l-4 bg-neutral-50 text-neutral-600 border-neutral-500 quote">
-                  <div class="stylistic-quote-mark" aria-hidden="true"></div>
-                  <p class="text-gray-800">${this._rationale}</p>
-                  <cite class="block text-right text-sm italic mt-2">Paolo, Video Clerk</cite>
-                </blockquote>
-                `
-            : ''}
-                  <movie-grid
-                    .movies=${this._movies}
-                    .loading=${this._loading}
-                    .error=${this._error}
-                    .currentPage=${this._currentPage}
-                    .totalPages=${this._totalPages}
-                    @page-change=${this._handlePageChange}
-                    @movie-click=${this._handleMovieClick}
-                  ></movie-grid>
+                  <div class="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl">
+                    ${this._rationale
+              ? html`
+                  <blockquote class="relative p-6 text-xl border-l-4 bg-neutral-50 text-neutral-600 border-neutral-500 quote">
+                    <div class="stylistic-quote-mark" aria-hidden="true"></div>
+                    <p class="text-gray-800">${this._rationale}</p>
+                    <cite class="block text-right text-sm italic mt-2">Paolo, Video Clerk</cite>
+                  </blockquote>
+                  `
+              : ''}
+                    <movie-grid
+                      .movies=${this._movies}
+                      .loading=${this._loading}
+                      .error=${this._error}
+                      .currentPage=${this._currentPage}
+                      .totalPages=${this._totalPages}
+                      @page-change=${this._handlePageChange}
+                      @movie-click=${this._handleMovieClick}
+                    ></movie-grid>
+                  </div>
                 `}
           </div>
         </div>
