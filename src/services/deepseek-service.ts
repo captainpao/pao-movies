@@ -1,7 +1,5 @@
 
-const envBackendUrl = import.meta.env.VITE_BACKEND_URL;
-const BACKEND_URL = envBackendUrl === 'http://localhost:3001' ? '' : (envBackendUrl || '');
-const DEEPSEEK_API_URL = `${BACKEND_URL}/api/deepseek/chat`;
+import { DEEPSEEK_API_URL } from '../config/api';
 
 export const deepseekService = {
   async getRecommendations(prompt: string, availableMovies: any[]): Promise<{ recommendations: any[], rationale: string }> {
@@ -29,7 +27,7 @@ When the user asks for a recommendation, you must:
     `;
 
     try {
-      const response = await fetch(DEEPSEEK_API_URL, {
+      const response = await fetch(`${DEEPSEEK_API_URL}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -1,8 +1,7 @@
 import { MoviesResponse, SearchParams, MovieDetail } from '../types/movie';
+import { TMDB_API_URL } from '../config/api';
 
-const envBackendUrl = import.meta.env.VITE_BACKEND_URL;
-const BACKEND_URL = envBackendUrl === 'http://localhost:3001' ? '' : (envBackendUrl || '');
-const BASE_URL = `${BACKEND_URL}/api/tmdb`;
+const BASE_URL = TMDB_API_URL;
 const IMAGE_BASE_URL = import.meta.env.VITE_TMDB_IMAGE_BASE_URL || 'https://image.tmdb.org/t/p';
 
 class TMDBService {
