@@ -93,7 +93,7 @@ export class MovieApp extends LitElement {
           try {
             return await tmdbService.getMovieById(id);
           } catch (e) {
-            console.warn(`Failed to fetch details for ${m.title}`, e);
+            // Fallback will be used
           }
         }
 
@@ -149,7 +149,7 @@ export class MovieApp extends LitElement {
           try {
             return await tmdbService.getMovieById(id);
           } catch (e) {
-            console.warn(`Failed to fetch details for ${m.title}`, e);
+            // Fallback will be used
           }
         }
 
@@ -211,7 +211,6 @@ export class MovieApp extends LitElement {
   }
 
   private async _handleMovieClick(event: CustomEvent) {
-    console.log('_handleMovieClick called', event.detail.movie);
     const movie = event.detail.movie;
     this._selectedMovie = null;
     this._detailLoading = true;
@@ -219,19 +218,14 @@ export class MovieApp extends LitElement {
     this.requestUpdate();
 
     try {
-      console.log('Calling getMovieById for id:', movie.id);
       const detail = await tmdbService.getMovieById(movie.id);
-      console.log('getMovieById returned:', detail);
       this._selectedMovie = detail;
-      console.log('Set _selectedMovie:', this._selectedMovie);
     } catch (error) {
-      console.error('Error in _handleMovieClick:', error);
       this._detailError =
         error instanceof Error ? error.message : 'Failed to load movie details';
     } finally {
       this._detailLoading = false;
       this.requestUpdate();
-      console.log('Finished _handleMovieClick, loading set to false');
     }
   }
 
@@ -266,14 +260,14 @@ export class MovieApp extends LitElement {
 
                   <div class="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl">
                     ${this._rationale
-              ? html`
+            ? html`
                   <blockquote class="relative p-6 text-xl border-l-4 bg-neutral-50 text-neutral-600 border-neutral-500 quote">
                     <div class="stylistic-quote-mark" aria-hidden="true"></div>
                     <p class="text-gray-800">${this._rationale}</p>
                     <cite class="block text-right text-sm italic mt-2">Paolo, Video Clerk</cite>
                   </blockquote>
                   `
-              : ''}
+            : ''}
                     <movie-grid
                       .movies=${this._movies}
                       .loading=${this._loading}

@@ -7,16 +7,13 @@ const IMAGE_BASE_URL = import.meta.env.VITE_TMDB_IMAGE_BASE_URL || 'https://imag
 class TMDBService {
   private async fetchWithErrorHandling<T>(url: string): Promise<T> {
     try {
-      console.log(`Fetching URL: ${url}`);
       const response = await fetch(url);
-      console.log(`Response status: ${response.status}`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('Fetched data:', data);
 
       if (data.errors) {
         throw new Error(data.errors.join(', '));

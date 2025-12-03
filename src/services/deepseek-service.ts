@@ -66,7 +66,6 @@ When the user asks for a recommendation, you must:
       return { recommendations, rationale };
 
     } catch (error) {
-      console.error('DeepSeek API Error:', error);
       throw error;
     }
   }
