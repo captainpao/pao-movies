@@ -276,10 +276,7 @@ export class MovieApp extends LitElement {
                         ></movie-detail>
                       `
             : html`
-                        <div
-                          class="bg-no-repeat bg-[length:150px] sm:bg-[length:330px] bg-[right_8px_top] sm:bg-[right_50px_top] sm:min-h-[360px] pb-4"
-                          style="background-image: url('${this._clerk.image}')"
-                        >
+                        <div style="background-image: url('${this._clerk.image}'); background-repeat: no-repeat; background-size: ${this._clerk.storeFigureSize}; background-position: top right 50px; padding-bottom: 16px;">
                           <search-bar
                             .clerk=${this._clerk}
                             .loading=${this._loading}

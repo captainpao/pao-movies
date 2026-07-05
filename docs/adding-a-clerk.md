@@ -58,8 +58,15 @@ Describe their voice and taste. When you write your rationale, ...`,
   quoteAttribution: 'Name, Video Clerk',
   searchTagline: 'Header line shown above the search bar.',
   searchPlaceholder: 'Tell Name what you're after — like, "…".',
+  storeFigureSize: '300px', // tune so the figure frames well behind the search bar
 }
 ```
+
+`storeFigureSize` is the CSS `background-size` of the clerk's figure behind the
+store search bar. The section height is fixed, so a **smaller** value shows more
+of the body (the whole figure scales down to fit), a larger value crops tighter
+to the head. Tune per character — e.g. Paolo is `300px`, Uncle Pai is `195px` so
+his camera and torso stay in frame.
 
 That's it. The landing picker (a `flex-wrap` grid) re-centers for any number of
 clerks, and selecting the new clerk wires their list + persona into the store
