@@ -75,7 +75,7 @@ export class LandingPage extends LitElement {
                   @click=${() => this._selectClerk(clerk)}
                 >
                   <div
-                    class="w-full flex items-center justify-center ${CARD_BG[
+                    class="w-full overflow-hidden flex items-center justify-center ${CARD_BG[
                       i % CARD_BG.length
                     ]}"
                   >
@@ -86,8 +86,12 @@ export class LandingPage extends LitElement {
                     />
                   </div>
                   <div class="px-4 py-4 text-center">
-                    <h2 class="text-2xl font-bold text-white">${clerk.name}</h2>
-                    <p class="mt-1 text-sm text-indigo-200">${clerk.tagline}</p>
+                    <h2 class="text-2xl font-bold uppercase tracking-wide text-white">
+                      ${clerk.name}
+                    </h2>
+                    <p class="mt-1 text-sm text-indigo-200">
+                      ${clerk.searchTagline}
+                    </p>
                   </div>
                 </button>
               `
