@@ -22,23 +22,21 @@ export class LandingPage extends LitElement {
   render() {
     return html`
       <div class="w-full">
-        <!-- Hero band: generated storefront + real Bungee wordmark on the marquee -->
-        <div class="relative w-full">
-          <img
-            src=${heroImg}
-            alt="The Pao Fiction video store at night"
-            class="w-full h-auto block select-none pointer-events-none"
-          />
-          <!-- bottom fade so the night sky melts into the page gradient -->
-          <div
-            class="absolute inset-x-0 bottom-0 h-24 sm:h-32 bg-gradient-to-b from-transparent to-slate-900 pointer-events-none"
-          ></div>
-          <!-- wordmark overlaid on the blank marquee (real text, not baked into the image) -->
-          <h1
-            class="absolute left-1/2 -translate-x-1/2 top-[14.5%] w-[26%] text-center leading-none font-bungee text-transparent bg-clip-text bg-gradient-to-br from-[#fff200] via-[#ffe600] to-[#d57e05] drop-shadow-[0_2px_0_rgba(0,0,0,0.35)] text-[clamp(0.7rem,3.6vw,4rem)]"
-          >
-            PAO FICTION
-          </h1>
+        <!-- Hero band: full-width 500px cover image, darkened, giant title overlaid -->
+        <div
+          class="relative w-full h-[500px] bg-cover bg-center"
+          style="background-image: url('${heroImg}')"
+        >
+          <!-- darken layer -->
+          <div class="absolute inset-0 bg-black/50"></div>
+          <!-- giant title over the darken layer -->
+          <div class="absolute inset-0 flex items-center justify-center px-4">
+            <h1
+              class="font-bungee text-center leading-none text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)] text-6xl sm:text-8xl md:text-9xl"
+            >
+              PAO FICTION
+            </h1>
+          </div>
         </div>
 
         <!-- Picker: subtitle + clerk cards, pulled up into the scene -->
