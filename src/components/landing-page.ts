@@ -3,6 +3,17 @@ import { customElement } from 'lit/decorators.js';
 import { clerks, Clerk } from '../data/clerks';
 import heroImg from '../assets/images/pao-fiction-storefront.webp';
 
+// Brady-Bunch-style palette: each clerk card gets a different colored backdrop,
+// assigned by position so it stays stable and needs no per-clerk config.
+const CARD_BG = [
+  'bg-gradient-to-br from-rose-400 to-rose-600',
+  'bg-gradient-to-br from-teal-300 to-teal-500',
+  'bg-gradient-to-br from-amber-300 to-amber-500',
+  'bg-gradient-to-br from-violet-400 to-violet-600',
+  'bg-gradient-to-br from-sky-300 to-sky-500',
+  'bg-gradient-to-br from-orange-300 to-orange-500',
+];
+
 @customElement('landing-page')
 export class LandingPage extends LitElement {
   createRenderRoot() {
@@ -39,30 +50,34 @@ export class LandingPage extends LitElement {
             <p
               class="mt-2 sm:mt-4 font-bungee uppercase text-white/90 tracking-[0.3em] drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)] text-sm sm:text-xl lg:text-2xl"
             >
-              Video Store
+              The Video Store
+            </p>
+            <p
+              class="mt-3 sm:mt-5 max-w-md text-center text-white/90 drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)] text-sm sm:text-lg lg:text-xl"
+            >
+              Every clerk's got taste. Whose do you trust?
             </p>
           </div>
         </div>
 
-        <!-- Picker: subtitle + clerk cards, pulled up into the scene -->
-        <div class="px-4 pb-12 pt-6">
-          <p class="text-center text-lg sm:text-xl text-indigo-200 mb-8">
-            Every clerk's got taste. Whose do you trust?
-          </p>
+        <!-- Picker: clerk cards (tagline lives in the header) -->
+        <div class="px-4 pb-12 pt-10">
           <!-- flex-wrap + justify-center scales to any number of clerks -->
           <div
             class="flex flex-wrap justify-center gap-8 w-full max-w-6xl mx-auto"
           >
             ${clerks.map(
-              (clerk) => html`
+              (clerk, i) => html`
                 <button
-                  class="group w-full sm:w-80 bg-white/10 backdrop-blur rounded-2xl p-6 flex flex-col items-center
-                         border border-white/20 hover:border-yellow-400 hover:bg-white/20
-                         transition-all duration-200 cursor-pointer"
+                  class="group w-full sm:w-80 flex flex-col overflow-hidden rounded-2xl
+                         border border-white/20 hover:border-yellow-400
+                         bg-white/10 backdrop-blur transition-all duration-200 cursor-pointer"
                   @click=${() => this._selectClerk(clerk)}
                 >
                   <div
-                    class="w-full rounded-xl overflow-hidden bg-gradient-to-br from-[#fff200] via-[#ffe600] to-[#d57e05] flex items-center justify-center"
+                    class="w-full flex items-center justify-center ${CARD_BG[
+                      i % CARD_BG.length
+                    ]}"
                   >
                     <img
                       src=${clerk.image}
@@ -70,12 +85,10 @@ export class LandingPage extends LitElement {
                       class="h-56 sm:h-64 object-contain group-hover:scale-105 transition-transform duration-200"
                     />
                   </div>
-                  <h2 class="mt-4 text-2xl font-bold text-white">
-                    ${clerk.name}
-                  </h2>
-                  <p class="mt-1 text-sm text-indigo-200 text-center">
-                    ${clerk.tagline}
-                  </p>
+                  <div class="px-4 py-4 text-center">
+                    <h2 class="text-2xl font-bold text-white">${clerk.name}</h2>
+                    <p class="mt-1 text-sm text-indigo-200">${clerk.tagline}</p>
+                  </div>
                 </button>
               `
             )}
