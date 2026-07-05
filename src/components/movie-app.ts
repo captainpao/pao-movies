@@ -255,10 +255,10 @@ export class MovieApp extends LitElement {
   render() {
     return html`
       <div class="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900">
-        <div class="max-w-[1600px] mx-auto relative">
           ${!this._clerk
         ? html`<landing-page @clerk-selected=${this._handleClerkSelected}></landing-page>`
         : html`
+                <div class="max-w-[1600px] mx-auto relative">
                 <div class="p-4">
                   <button
                     class="mb-2 text-sm text-indigo-200 hover:text-yellow-400 transition-colors duration-200"
@@ -307,8 +307,8 @@ export class MovieApp extends LitElement {
                         </div>
                       `}
                 </div>
+                </div>
               `}
-        </div>
 
         ${this._showError
         ? html` <div class="fixed top-4 right-4 bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg z-50">${this._error}</div> `

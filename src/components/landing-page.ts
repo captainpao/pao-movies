@@ -24,15 +24,15 @@ export class LandingPage extends LitElement {
       <div class="w-full">
         <!-- Hero band: full-width 500px cover image, darkened, giant title overlaid -->
         <div
-          class="relative w-full h-[500px] bg-cover bg-center"
+          class="relative w-full h-[250px] sm:h-[350px] lg:h-[500px] bg-cover bg-center"
           style="background-image: url('${heroImg}')"
         >
           <!-- darken layer -->
           <div class="absolute inset-0 bg-black/50"></div>
-          <!-- giant title over the darken layer -->
+          <!-- giant title over the darken layer, in the site's yellow gradient -->
           <div class="absolute inset-0 flex items-center justify-center px-4">
             <h1
-              class="font-bungee text-center leading-none text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)] text-6xl sm:text-8xl md:text-9xl"
+              class="font-bungee text-center leading-none text-transparent bg-clip-text bg-gradient-to-br from-[#fff200] via-[#ffe600] to-[#d57e05] drop-shadow-[0_3px_8px_rgba(0,0,0,0.6)] text-5xl sm:text-7xl lg:text-9xl"
             >
               PAO FICTION
             </h1>
