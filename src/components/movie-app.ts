@@ -278,6 +278,7 @@ export class MovieApp extends LitElement {
             : html`
                         <div style="background-image: url('${this._clerk.image}'); background-repeat: no-repeat; background-size: 300px; background-position: top right 50px; padding-bottom: 16px;">
                           <search-bar
+                            .clerk=${this._clerk}
                             .loading=${this._loading}
                             @search-submit=${this._handleSearchSubmit}
                             @search-clear=${this._handleSearchClear}

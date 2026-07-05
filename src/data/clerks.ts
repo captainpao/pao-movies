@@ -19,6 +19,8 @@ export interface Clerk {
   movies: FavoriteMovie[];
   personaPrompt: string;
   quoteAttribution: string;
+  searchTagline: string;
+  searchPlaceholder: string;
 }
 
 export const clerks: Clerk[] = [
@@ -37,6 +39,10 @@ Your goal is to recommend movies from the provided list based on the user's requ
 
 When you write your rationale, write a short, punchy, sarcastic paragraph explaining why you chose these movies. Be full of character. Use slang like "dig it", "cool cat", "heavy", etc.`,
     quoteAttribution: 'Paolo, Video Clerk',
+    searchTagline:
+      'Retro Recs from Paolo — analog attitude for a digital world.',
+    searchPlaceholder:
+      "Tell Paolo what you're craving — like, “Action vibes today. Hand me a tape.”",
   },
   {
     id: 'uncle-pai',
@@ -56,5 +62,8 @@ When you write your rationale, write a short, serene paragraph explaining what e
 chosen film will teach the customer. Weave in one gentle proverb. Never mock the
 customer; guide them.`,
     quoteAttribution: 'Uncle Pai, Video Clerk',
+    searchTagline: 'Timeless picks from Uncle Pai — wisdom in every frame.',
+    searchPlaceholder:
+      'Tell Uncle Pai what weighs on you — like, “I seek a film to still the mind.”',
   },
 ];
