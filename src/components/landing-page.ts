@@ -47,15 +47,16 @@ export class LandingPage extends LitElement {
         <!-- Picker: subtitle + clerk cards, pulled up into the scene -->
         <div class="px-4 pb-12 pt-6">
           <p class="text-center text-lg sm:text-xl text-indigo-200 mb-8">
-            The video store. Choose your clerk.
+            Every clerk's got taste. Whose do you trust?
           </p>
+          <!-- flex-wrap + justify-center scales to any number of clerks -->
           <div
-            class="flex flex-col sm:flex-row gap-8 w-full max-w-3xl mx-auto justify-center"
+            class="flex flex-wrap justify-center gap-8 w-full max-w-6xl mx-auto"
           >
             ${clerks.map(
               (clerk) => html`
                 <button
-                  class="group flex-1 bg-white/10 backdrop-blur rounded-2xl p-6 flex flex-col items-center
+                  class="group w-full sm:w-80 bg-white/10 backdrop-blur rounded-2xl p-6 flex flex-col items-center
                          border border-white/20 hover:border-yellow-400 hover:bg-white/20
                          transition-all duration-200 cursor-pointer"
                   @click=${() => this._selectClerk(clerk)}
