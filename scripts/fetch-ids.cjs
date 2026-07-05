@@ -5,7 +5,10 @@ const path = require('path');
 const API_KEY = '70e6d2184b0a7a8a6f9f42f5b73df664';
 const BASE_URL = 'https://api.themoviedb.org/3';
 
-const dataFilePath = path.join(__dirname, '../src/data/captainpao-movies.ts');
+// Usage: node scripts/fetch-ids.cjs [dataFile] [exportName]
+const dataFile = process.argv[2] || '../src/data/captainpao-movies.ts';
+const exportName = process.argv[3] || 'captainPaoFavoriteMovies';
+const dataFilePath = path.isAbsolute(dataFile) ? dataFile : path.join(__dirname, dataFile);
 
 async function fetchMovieId(title, year, director) {
   try {
@@ -14,9 +17,13 @@ async function fetchMovieId(title, year, director) {
     const data = await response.json();
 
     if (data.results && data.results.length > 0) {
-      // Simple heuristic: pick the first one. 
+      // Simple heuristic: pick the first one.
       // We could check director if we fetched details, but search usually does a good job with title + year.
-      return data.results[0].id;
+      const hit = data.results[0];
+      if (hit.title.toLowerCase() !== title.toLowerCase()) {
+        console.warn(`  MATCH CHECK: asked "${title}" got "${hit.title}" (${(hit.release_date || '').slice(0, 4)})`);
+      }
+      return hit.id;
     } else {
       // Try without year if not found (sometimes release dates differ)
       const urlNoYear = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(title)}`;
@@ -38,7 +45,7 @@ async function fetchMovieId(title, year, director) {
 async function main() {
   const fileContent = fs.readFileSync(dataFilePath, 'utf8');
   // Extract the array part
-  const match = fileContent.match(/export const captainPaoFavoriteMovies = (\[[\s\S]*?\]);/);
+  const match = fileContent.match(new RegExp(`export const ${exportName} = (\\[[\\s\\S]*?\\]);`));
   if (!match) {
     console.error('Could not parse data file');
     process.exit(1);
@@ -64,7 +71,7 @@ async function main() {
     await new Promise(resolve => setTimeout(resolve, 200));
   }
 
-  const newContent = `export const captainPaoFavoriteMovies = ${JSON.stringify(updatedMovies, null, 2)};\n`;
+  const newContent = `export const ${exportName} = ${JSON.stringify(updatedMovies, null, 2)};\n`;
 
   fs.writeFileSync(dataFilePath, newContent);
   console.log('Done! Updated file with IDs.');
