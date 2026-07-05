@@ -43,17 +43,17 @@ export class LandingPage extends LitElement {
           <!-- giant title + subtitle over the darken layer, in the site's yellow gradient -->
           <div class="absolute inset-0 flex flex-col items-center justify-center px-4">
             <h1
-              class="font-bungee text-center leading-none text-transparent bg-clip-text bg-gradient-to-br from-[#fff200] via-[#ffe600] to-[#d57e05] drop-shadow-[0_3px_8px_rgba(0,0,0,0.6)] text-5xl sm:text-7xl lg:text-9xl"
+              class="font-bungee text-center leading-none text-transparent bg-clip-text bg-gradient-to-br from-[#fff200] via-[#ffe600] to-[#d57e05] drop-shadow-[0_3px_8px_rgba(0,0,0,0.6)] text-6xl sm:text-7xl lg:text-9xl"
             >
               PAO FICTION
             </h1>
             <p
-              class="mt-2 sm:mt-4 font-bungee uppercase text-white/90 tracking-[0.3em] drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)] text-sm sm:text-xl lg:text-2xl"
+              class="mt-2 sm:mt-4 font-bungee uppercase text-white/90 tracking-[0.3em] drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)] text-xl sm:text-2xl lg:text-3xl"
             >
               The Video Store
             </p>
             <p
-              class="mt-3 sm:mt-5 max-w-md text-center text-white/90 drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)] text-sm sm:text-lg lg:text-xl"
+              class="mt-3 sm:mt-5 max-w-md text-center text-white/90 drop-shadow-[0_2px_6px_rgba(0,0,0,0.85)] text-md sm:text-lg lg:text-xl"
             >
               Every clerk's got taste. Whose do you trust?
             </p>
