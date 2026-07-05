@@ -3,9 +3,9 @@ import { customElement } from 'lit/decorators.js';
 import { Movie, MovieDetail } from '../types/movie';
 import { tmdbService } from '../services/tmdb-api';
 import { deepseekService } from '../services/deepseek-service';
-import { captainPaoFavoriteMovies } from '../data/captainpao-movies';
+import { Clerk } from '../data/clerks';
 import './movie-detail';
-import paoVideoClerkBg from '../assets/images/pao-video-clerk.png';
+import './landing-page';
 
 @customElement('movie-app')
 export class MovieApp extends LitElement {
@@ -13,6 +13,7 @@ export class MovieApp extends LitElement {
     return this;
   }
 
+  private _clerk: Clerk | null = null;
   private _movies: Movie[] = [];
   private _loading = false;
   private _error = '';
@@ -70,12 +71,7 @@ export class MovieApp extends LitElement {
     this.requestUpdate();
   }
 
-  connectedCallback(): void {
-    super.connectedCallback();
-    this._loadCaptainPaoMovies();
-  }
-
-  private async _loadCaptainPaoMovies(page: number = 1) {
+  private async _loadClerkMovies(page: number = 1) {
     this.loading = true;
     this.error = '';
     this._searchMode = false;
@@ -85,7 +81,7 @@ export class MovieApp extends LitElement {
       const itemsPerPage = 20;
       const start = (page - 1) * itemsPerPage;
       const end = start + itemsPerPage;
-      const paginatedMovies = captainPaoFavoriteMovies.slice(start, end);
+      const paginatedMovies = this._clerk!.movies.slice(start, end);
 
       const moviePromises = paginatedMovies.map(async (m) => {
         const id = (m as any).id;
@@ -113,7 +109,7 @@ export class MovieApp extends LitElement {
 
       this.movies = await Promise.all(moviePromises);
       this.currentPage = page;
-      this.totalPages = Math.ceil(captainPaoFavoriteMovies.length / itemsPerPage);
+      this.totalPages = Math.ceil(this._clerk!.movies.length / itemsPerPage);
     } catch (error) {
       this.error = 'Failed to load movies';
       this._showErrorToast(this.error);
@@ -133,8 +129,12 @@ export class MovieApp extends LitElement {
 
     try {
       // Use DeepSeek to get recommendations based on the prompt
-      // We pass the full list of movies to the service so Paolo can choose from them
-      const { recommendations, rationale } = await deepseekService.getRecommendations(query, captainPaoFavoriteMovies);
+      // We pass the full list of movies to the service so the clerk can choose from them
+      const { recommendations, rationale } = await deepseekService.getRecommendations(
+        query,
+        this._clerk!.movies,
+        this._clerk!.personaPrompt
+      );
 
       this._rationale = rationale;
 
@@ -188,7 +188,7 @@ export class MovieApp extends LitElement {
 
   private _handleSearchClear() {
     this._rationale = '';
-    this._loadCaptainPaoMovies();
+    this._loadClerkMovies();
   }
 
   private _handlePageChange(event: CustomEvent) {
@@ -196,8 +196,25 @@ export class MovieApp extends LitElement {
     if (this._searchMode) {
       this._searchMovies(this._currentQuery, page);
     } else {
-      this._loadCaptainPaoMovies(page);
+      this._loadClerkMovies(page);
     }
+  }
+
+  private _handleClerkSelected(event: CustomEvent) {
+    this._clerk = event.detail.clerk;
+    this.requestUpdate();
+    this._loadClerkMovies();
+  }
+
+  private _handleChangeClerk() {
+    this._clerk = null;
+    this._movies = [];
+    this._rationale = '';
+    this._searchMode = false;
+    this._currentQuery = '';
+    this._selectedMovie = null;
+    this._detailError = '';
+    this.requestUpdate();
   }
 
   private _showErrorToast(message: string) {
@@ -239,47 +256,57 @@ export class MovieApp extends LitElement {
     return html`
       <div class="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900">
         <div class="max-w-[1600px] mx-auto relative">
-          <div class="p-4">
-            ${this._selectedMovie || this._detailLoading || this._detailError
-        ? html`
-                  <movie-detail
-                    .movie=${this._selectedMovie}
-                    .loading=${this._detailLoading}
-                    .error=${this._detailError}
-                    @back-click=${this._handleBackClick}
-                  ></movie-detail>
-                `
+          ${!this._clerk
+        ? html`<landing-page @clerk-selected=${this._handleClerkSelected}></landing-page>`
         : html`
-                  <div style="background-image: url('${paoVideoClerkBg}'); background-repeat: no-repeat; background-size: 300px; background-position: top right 50px; padding-bottom: 16px;">
-                    <search-bar
-                      .loading=${this._loading}
-                      @search-submit=${this._handleSearchSubmit}
-                      @search-clear=${this._handleSearchClear}
-                    ></search-bar>
-                  </div>
-
-                  <div class="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl">
-                    ${this._rationale
+                <div class="p-4">
+                  <button
+                    class="mb-2 text-sm text-indigo-200 hover:text-yellow-400 transition-colors duration-200"
+                    @click=${this._handleChangeClerk}
+                  >
+                    ← Change clerk
+                  </button>
+                  ${this._selectedMovie || this._detailLoading || this._detailError
             ? html`
-                  <blockquote class="relative p-6 text-xl border-l-4 bg-neutral-50 text-neutral-600 border-neutral-500 quote">
-                    <div class="stylistic-quote-mark" aria-hidden="true"></div>
-                    <p class="text-gray-800">${this._rationale}</p>
-                    <cite class="block text-right text-sm italic mt-2">Paolo, Video Clerk</cite>
-                  </blockquote>
-                  `
-            : ''}
-                    <movie-grid
-                      .movies=${this._movies}
-                      .loading=${this._loading}
-                      .error=${this._error}
-                      .currentPage=${this._currentPage}
-                      .totalPages=${this._totalPages}
-                      @page-change=${this._handlePageChange}
-                      @movie-click=${this._handleMovieClick}
-                    ></movie-grid>
-                  </div>
-                `}
-          </div>
+                        <movie-detail
+                          .movie=${this._selectedMovie}
+                          .loading=${this._detailLoading}
+                          .error=${this._detailError}
+                          @back-click=${this._handleBackClick}
+                        ></movie-detail>
+                      `
+            : html`
+                        <div style="background-image: url('${this._clerk.image}'); background-repeat: no-repeat; background-size: 300px; background-position: top right 50px; padding-bottom: 16px;">
+                          <search-bar
+                            .loading=${this._loading}
+                            @search-submit=${this._handleSearchSubmit}
+                            @search-clear=${this._handleSearchClear}
+                          ></search-bar>
+                        </div>
+
+                        <div class="bg-white p-4 sm:p-8 rounded-2xl shadow-2xl">
+                          ${this._rationale
+                ? html`
+                        <blockquote class="relative p-6 text-xl border-l-4 bg-neutral-50 text-neutral-600 border-neutral-500 quote">
+                          <div class="stylistic-quote-mark" aria-hidden="true"></div>
+                          <p class="text-gray-800">${this._rationale}</p>
+                          <cite class="block text-right text-sm italic mt-2">${this._clerk.quoteAttribution}</cite>
+                        </blockquote>
+                        `
+                : ''}
+                          <movie-grid
+                            .movies=${this._movies}
+                            .loading=${this._loading}
+                            .error=${this._error}
+                            .currentPage=${this._currentPage}
+                            .totalPages=${this._totalPages}
+                            @page-change=${this._handlePageChange}
+                            @movie-click=${this._handleMovieClick}
+                          ></movie-grid>
+                        </div>
+                      `}
+                </div>
+              `}
         </div>
 
         ${this._showError
