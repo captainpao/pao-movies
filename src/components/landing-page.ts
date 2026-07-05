@@ -24,18 +24,23 @@ export class LandingPage extends LitElement {
       <div class="w-full">
         <!-- Hero band: full-width 500px cover image, darkened, giant title overlaid -->
         <div
-          class="relative w-full h-[250px] sm:h-[350px] lg:h-[500px] bg-cover bg-center"
+          class="relative w-full h-[250px] sm:h-[350px] lg:h-[450px] bg-cover bg-center"
           style="background-image: url('${heroImg}')"
         >
           <!-- darken layer -->
           <div class="absolute inset-0 bg-black/50"></div>
-          <!-- giant title over the darken layer, in the site's yellow gradient -->
-          <div class="absolute inset-0 flex items-center justify-center px-4">
+          <!-- giant title + subtitle over the darken layer, in the site's yellow gradient -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center px-4">
             <h1
               class="font-bungee text-center leading-none text-transparent bg-clip-text bg-gradient-to-br from-[#fff200] via-[#ffe600] to-[#d57e05] drop-shadow-[0_3px_8px_rgba(0,0,0,0.6)] text-5xl sm:text-7xl lg:text-9xl"
             >
               PAO FICTION
             </h1>
+            <p
+              class="mt-2 sm:mt-4 font-bungee uppercase text-white/90 tracking-[0.3em] drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)] text-sm sm:text-xl lg:text-2xl"
+            >
+              Video Store
+            </p>
           </div>
         </div>
 
@@ -55,11 +60,15 @@ export class LandingPage extends LitElement {
                          transition-all duration-200 cursor-pointer"
                   @click=${() => this._selectClerk(clerk)}
                 >
-                  <img
-                    src=${clerk.image}
-                    alt=${clerk.name}
-                    class="h-56 sm:h-64 object-contain group-hover:scale-105 transition-transform duration-200"
-                  />
+                  <div
+                    class="w-full rounded-xl overflow-hidden bg-gradient-to-br from-[#fff200] via-[#ffe600] to-[#d57e05] flex items-center justify-center"
+                  >
+                    <img
+                      src=${clerk.image}
+                      alt=${clerk.name}
+                      class="h-56 sm:h-64 object-contain group-hover:scale-105 transition-transform duration-200"
+                    />
+                  </div>
                   <h2 class="mt-4 text-2xl font-bold text-white">
                     ${clerk.name}
                   </h2>
