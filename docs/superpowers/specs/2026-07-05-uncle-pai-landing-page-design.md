@@ -26,8 +26,12 @@ interface Clerk {
   movies: FavoriteMovie[];  // the clerk's 100-film list
   personaPrompt: string;    // system prompt for DeepSeek
   quoteAttribution: string; // e.g. "Paolo, Video Clerk"
+  searchTagline: string;    // header copy above the search bar (added during E2E: search-bar had Paolo copy hardcoded)
+  searchPlaceholder: string;// textarea placeholder, per clerk
 }
 ```
+
+> **Amendment (2026-07-05, post-E2E):** live testing revealed `search-bar.ts` hardcoded Paolo's tagline, placeholder, and "Ask Paolo" button label. Fixed by adding `searchTagline`/`searchPlaceholder` to the clerk config and a `clerk` property on `<search-bar>`; the button label derives from `clerk.name`. `Clerk.id` shipped as `string` (not the literal union shown originally).
 
 Exports `clerks: Clerk[]` with both configs. Paolo's existing persona prompt moves out of `deepseek-service.ts` into his config, unchanged. Uncle Pai's prompt: warm sage persona, recommends 3–5 films from his list, returns the same JSON shape (`recommendations` ids + `rationale`).
 
