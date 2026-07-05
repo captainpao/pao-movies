@@ -24,8 +24,7 @@ export class LandingPage extends LitElement {
         class="min-h-screen flex flex-col items-center justify-center px-4 py-12"
       >
         <h1
-          class="text-5xl sm:text-7xl font-extrabold text-yellow-400 tracking-tight text-center"
-          style="font-family: 'Impact', 'Arial Black', sans-serif;"
+          class="text-5xl sm:text-7xl font-bungee text-center text-transparent bg-clip-text bg-gradient-to-br from-[#fff200] via-[#ffe600] to-[#d57e05] drop-shadow-[0_2px_0_rgba(0,0,0,0.25)]"
         >
           PAO FICTION
         </h1>
