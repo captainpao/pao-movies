@@ -260,12 +260,6 @@ export class MovieApp extends LitElement {
         : html`
                 <div class="max-w-[1600px] mx-auto relative">
                 <div class="p-4">
-                  <button
-                    class="mb-2 px-4 py-2 text-sm bg-gradient-to-r from-gray-600 to-gray-700 text-white font-semibold rounded-lg hover:from-gray-700 hover:to-gray-800 transition-all duration-200"
-                    @click=${this._handleChangeClerk}
-                  >
-                    ← Store Front
-                  </button>
                   ${this._selectedMovie || this._detailLoading || this._detailError
             ? html`
                         <movie-detail
@@ -276,6 +270,12 @@ export class MovieApp extends LitElement {
                         ></movie-detail>
                       `
             : html`
+                        <button
+                          class="mb-2 px-4 py-2 text-sm bg-gradient-to-r from-gray-600 to-gray-700 text-white font-semibold rounded-lg hover:from-gray-700 hover:to-gray-800 transition-all duration-200"
+                          @click=${this._handleChangeClerk}
+                        >
+                          ← Store Front
+                        </button>
                         <div style="background-image: url('${this._clerk.image}'); background-repeat: no-repeat; background-size: ${this._clerk.storeFigureSize}; background-position: top right 50px; padding-bottom: 16px;">
                           <search-bar
                             .clerk=${this._clerk}
