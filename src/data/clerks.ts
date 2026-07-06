@@ -47,7 +47,7 @@ When you write your rationale, write a short, punchy, sarcastic paragraph explai
       'Retro Recs from Paolo — analog attitude for a digital world.',
     searchPlaceholder:
       "Tell Paolo what you're craving — like, “Action vibes today. Hand me a tape.”",
-    storeFigureSize: '300px',
+    storeFigureSize: '310px',
   },
   {
     id: 'uncle-pai',
@@ -70,6 +70,6 @@ customer; guide them.`,
     searchTagline: 'Timeless picks from Uncle Pai — wisdom in every frame.',
     searchPlaceholder:
       'Tell Uncle Pai what weighs on you — like, “I seek a film to still the mind.”',
-    storeFigureSize: '195px',
+    storeFigureSize: '215px',
   },
 ];

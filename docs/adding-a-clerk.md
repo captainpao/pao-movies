@@ -65,7 +65,7 @@ Describe their voice and taste. When you write your rationale, ...`,
 `storeFigureSize` is the CSS `background-size` of the clerk's figure behind the
 store search bar. The section height is fixed, so a **smaller** value shows more
 of the body (the whole figure scales down to fit), a larger value crops tighter
-to the head. Tune per character — e.g. Paolo is `300px`, Uncle Pai is `195px` so
+to the head. Tune per character — e.g. Paolo is `310px`, Uncle Pai is `215px` so
 his camera and torso stay in frame.
 
 That's it. The landing picker (a `flex-wrap` grid) re-centers for any number of
