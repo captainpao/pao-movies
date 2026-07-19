@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { MovieDetail } from '../types/movie';
-import { tmdbService } from '../services/tmdb-api';
+import { tmdbService, handlePosterError } from '../services/tmdb-api';
 
 @customElement('movie-detail')
 export class MovieDetailComponent extends LitElement {
@@ -91,6 +91,7 @@ export class MovieDetailComponent extends LitElement {
                 src="${posterUrl}"
                 alt="${this.movie.title} poster"
                 class="w-64 rounded-xl shadow-2xl border-4 border-white"
+                @error=${handlePosterError}
               />
             </div>
 
@@ -164,6 +165,7 @@ export class MovieDetailComponent extends LitElement {
           )}"
                           alt="${actor.name}"
                           class="w-full h-40 object-cover rounded-lg mb-2 shadow-md"
+                          @error=${handlePosterError}
                         />
                         <p class="font-semibold text-gray-900 text-sm truncate">
                           ${actor.name}

@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { Movie } from '../types/movie';
-import { tmdbService } from '../services/tmdb-api';
+import { tmdbService, handlePosterError } from '../services/tmdb-api';
 
 @customElement('movie-card')
 export class MovieCard extends LitElement {
@@ -46,6 +46,7 @@ export class MovieCard extends LitElement {
               src=${posterUrl}
               alt="${this.movie.title}"
               loading="lazy"
+              @error=${handlePosterError}
             />`
         : html`<div class="flex items-center justify-center bg-gray-100 text-gray-400 text-sm h-[320px]">No poster available</div>`}
         <div class="p-5">

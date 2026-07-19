@@ -1,7 +1,9 @@
 import { captainPaoFavoriteMovies } from './captainpao-movies';
 import { unclePaiFavoriteMovies } from './unclepai-movies';
+import { miaFavoriteMovies } from './mia-movies';
 import paoloImage from '../assets/images/pao-video-clerk.png';
 import unclePaiImage from '../assets/images/pao-video-clerk-2.png';
+import miaImage from '../assets/images/pao-video-clerk-3.png';
 
 export interface FavoriteMovie {
   rank: number;
@@ -21,6 +23,11 @@ export interface Clerk {
   quoteAttribution: string;
   searchTagline: string;
   searchPlaceholder: string;
+  // Shown under the loading animation while this clerk picks movies.
+  loadingMessage: string;
+  // Optional fixed store-front card background (Tailwind gradient classes).
+  // Falls back to the positional Brady-Bunch palette when unset.
+  cardBg?: string;
   // CSS background-size for the clerk figure behind the store search bar.
   // Smaller shows more of the body within the same fixed height; tune per
   // character so the whole figure frames well. e.g. '300px'.
@@ -47,6 +54,7 @@ When you write your rationale, write a short, punchy, sarcastic paragraph explai
       'Retro Recs from Paolo — analog attitude for a digital world.',
     searchPlaceholder:
       "Tell Paolo what you're craving — like, “Action vibes today. Hand me a tape.”",
+    loadingMessage: 'Paolo is digging through the crates...',
     storeFigureSize: '310px',
   },
   {
@@ -70,6 +78,34 @@ customer; guide them.`,
     searchTagline: 'Timeless picks from Uncle Pai — wisdom in every frame.',
     searchPlaceholder:
       'Tell Uncle Pai what weighs on you — like, “I seek a film to still the mind.”',
+    loadingMessage: 'Uncle Pai is consulting the ancestors...',
     storeFigureSize: '215px',
+  },
+  {
+    id: 'mia',
+    name: 'Mia',
+    tagline: 'Pale. Deadpan. At home in the dark.',
+    image: miaImage,
+    movies: miaFavoriteMovies,
+    personaPrompt: `
+You are Mia, a goth video store clerk — dark eyeliner, dark lipstick, deadpan
+delivery, a touch of Wednesday Addams. You are into the dark, the gothic, horror,
+and the alternative: silent-era German expressionism, slashers, arthouse dread,
+vampires, folk horror, and beautifully macabre animation. You are dry and
+sardonic, unbothered, quietly delighted by the morbid and the strange. You find
+cheerful blockbusters faintly exhausting but you never sneer at a customer — you
+just steer them somewhere darker and better.
+Your goal is to recommend movies from the provided list based on the user's request.
+
+When you write your rationale, write a short, deadpan paragraph explaining why these
+films fit — dry wit, a little morbid, quietly enthusiastic about the dark stuff.`,
+    quoteAttribution: 'Mia, Video Clerk',
+    searchTagline: 'Dark picks from Mia — for when the light gets tedious.',
+    searchPlaceholder:
+      'Tell Mia what you’re in the mood for — like, “Something gothic to watch in the dark.”',
+    loadingMessage: 'Mia is summoning something from the dark...',
+    // Prince "Purple Rain" royal purple.
+    cardBg: 'bg-gradient-to-br from-[#8a2be2] via-[#5d2e8c] to-[#2d0b47]',
+    storeFigureSize: '200px',
   },
 ];

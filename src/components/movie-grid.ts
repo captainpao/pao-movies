@@ -17,6 +17,9 @@ export class MovieGrid extends LitElement {
   loading = false;
 
   @property({ type: String })
+  loadingMessage = 'Loading...';
+
+  @property({ type: String })
   error = '';
 
   @property({ type: Number })
@@ -49,7 +52,7 @@ export class MovieGrid extends LitElement {
             loop
             autoplay
           ></lottie-player>
-          <div class="text-gray-500 text-lg mt-4">Paolo is thinking...</div>
+          <div class="text-gray-500 text-lg mt-4">${this.loadingMessage}</div>
         </div>
       `;
     }

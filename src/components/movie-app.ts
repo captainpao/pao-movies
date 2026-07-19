@@ -298,6 +298,7 @@ export class MovieApp extends LitElement {
                           <movie-grid
                             .movies=${this._movies}
                             .loading=${this._loading}
+                            .loadingMessage=${this._clerk.loadingMessage}
                             .error=${this._error}
                             .currentPage=${this._currentPage}
                             .totalPages=${this._totalPages}

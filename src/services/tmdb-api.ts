@@ -4,6 +4,16 @@ import { TMDB_API_URL } from '../config/api';
 const BASE_URL = TMDB_API_URL;
 const IMAGE_BASE_URL = import.meta.env.VITE_TMDB_IMAGE_BASE_URL || 'https://image.tmdb.org/t/p';
 
+export const PLACEHOLDER_POSTER = '/placeholder-movie-poster.jpg';
+
+// Fallback for TMDB image links that 404 at load time (poster_path present but
+// the asset is gone). Attach as @error on <img>; the guard avoids a reload loop.
+export function handlePosterError(e: Event) {
+  const img = e.target as HTMLImageElement;
+  if (img.src.endsWith(PLACEHOLDER_POSTER)) return;
+  img.src = PLACEHOLDER_POSTER;
+}
+
 class TMDBService {
   private async fetchWithErrorHandling<T>(url: string): Promise<T> {
     try {
@@ -49,7 +59,7 @@ class TMDBService {
 
   getMoviePosterUrl(posterPath: string | null, size: string = 'w500'): string {
     if (!posterPath) {
-      return '/placeholder-movie-poster.jpg';
+      return PLACEHOLDER_POSTER;
     }
     return `${IMAGE_BASE_URL}/${size}${posterPath}`;
   }

@@ -75,9 +75,8 @@ export class LandingPage extends LitElement {
                   @click=${() => this._selectClerk(clerk)}
                 >
                   <div
-                    class="w-full overflow-hidden flex items-center justify-center ${CARD_BG[
-                      i % CARD_BG.length
-                    ]}"
+                    class="w-full overflow-hidden flex items-center justify-center ${clerk.cardBg ??
+                    CARD_BG[i % CARD_BG.length]}"
                   >
                     <img
                       src=${clerk.image}
