@@ -2,8 +2,13 @@
 const fs = require('fs');
 const path = require('path');
 
-const API_KEY = '70e6d2184b0a7a8a6f9f42f5b73df664';
+const API_KEY = process.env.TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
+
+if (!API_KEY) {
+  console.error('Missing TMDB_API_KEY. Run: TMDB_API_KEY=yourkey node scripts/fetch-ids.cjs');
+  process.exit(1);
+}
 
 // Usage: node scripts/fetch-ids.cjs [dataFile] [exportName]
 const dataFile = process.argv[2] || '../src/data/captainpao-movies.ts';
